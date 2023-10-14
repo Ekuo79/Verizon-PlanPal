@@ -1,17 +1,73 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './context/store';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: 'rgb(40, 87, 151)'
+    },
+    secondary: {
+      main: 'rgb(224, 129, 46)'
+    }
+  },
+  components: {
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          fontSize: '0.736607rem'
+        }
+      }
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          lineHeight: 'unset'
+        },
+        h1: {
+          'font-size': '1.875rem'
+        }
+      }
+    },
+    MuiPaper: {
+      styleOverrides: {
+        outlined: {
+          border: '1px solid rgb(204, 204, 204)'
+        },
+      }
+    },
+    MuiButton: {
+      styleOverrides: {
+        contained: {
+          'background-color': 'rgb(40, 87, 151)',
+          '&:hover': {
+            'background-color': 'rgb(17, 82, 147)'
+          }
+        },
+        sizeMedium: {
+          'font-size': '0.9375rem'
+        }
+      }
+    }
+  }
+});
+
+ReactDOM.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <BrowserRouter>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <Routes>
+            <Route path="/*" element={<App />} />
+          </Routes>
+        </ThemeProvider>
+      </Provider>
+    </BrowserRouter>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
