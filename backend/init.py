@@ -1,3 +1,4 @@
+# may want to combine this code into server.py
 from langchain.document_loaders import PyPDFLoader
 from langchain.vectorstores import FAISS
 from langchain.embeddings.openai import OpenAIEmbeddings
