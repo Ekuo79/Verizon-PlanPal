@@ -1,10 +1,6 @@
 # Current Idea
 
-Webpage with instant access to chatbot
-Chatbot will allow for enqueries about Verizon products
-If the user is looking for a phone plan or a phone we can provide suggestions
-Can ask questions about use cases in order to find the best plan for the user
-Once they have selected an item to purchase, prompt them for info to make a mock purchase
+Build a web app that finds the perfect plan for a potential customer, using the minimum amount of questions possible, making it interesting my using the voice of their favorite movie/tv character, and making it rewarding by finding them Version perks and teaching them a little about the technology behind what they are buying.
 
 # Goals
 Attractive frontend
