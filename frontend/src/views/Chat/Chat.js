@@ -1,7 +1,12 @@
 import { useEffect, useState, useRef, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Avatar, Box, Button, Container, Divider, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField, Typography, Fade, Grow } from '@mui/material';
+import {
+  Avatar, Box, Button, Container, Divider, FormControl, InputAdornment, InputLabel, List, ListItem, ListItemAvatar,
+  ListItemText, OutlinedInput, Paper, TextField, Typography, Fade, Grow
+} from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SendIcon from '@mui/icons-material/Send';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import SkeletonGroup from '../../components/SkeletonGroup/SkeletonGroup';
@@ -11,6 +16,7 @@ const Chat = () => {
   const loading = false;
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
+  const [currMsg, setCurrMsg] = useState(null);
   const [chatHistory, setChatHistory] = useState([]);
   const chatHisRef = useRef(null);
 
@@ -28,11 +34,14 @@ const Chat = () => {
   const handleSendMessage = async () => {
     const prompt = message.trim();
     if (prompt) {
-      setMessage('');
+      setCurrMsg(prompt);
       try {
         const response = await axios.post('/chat', { assistant, prompt });
         setChatHistory([...chatHistory, { 'role': 'User', content: prompt }, response?.data]);
+        setMessage('');
       } catch (error) {
+      } finally {
+        setCurrMsg(null);
       }
     }
   };
@@ -130,19 +139,27 @@ const Chat = () => {
                       }}
                     >
                       <Grow in={true} timeout={1000}>
-                        <TextField
-                          fullWidth
-                          variant="outlined"
-                          placeholder="Send a message"
-                          value={message}
-                          onChange={(e) => setMessage(e.target.value)}
-                          onKeyPress={(e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                              handleSendMessage();
-                              e.preventDefault();  // prevent the default action (new line) from being performed
+                        <FormControl disabled={currMsg !== null} fullWidth variant="outlined">
+                          <OutlinedInput
+                            fullWidth
+                            variant="outlined"
+                            placeholder="Send a message"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            onKeyPress={(e) => {
+                              if (e.key === 'Enter' && !e.shiftKey) {
+                                handleSendMessage();
+                                e.preventDefault();  // prevent the default action (new line) from being performed
+                              }
+                            }}
+                            endAdornment={
+                              <InputAdornment position="end">
+                                <LoadingButton onClick={handleSendMessage} loading={currMsg !== null} disabled={!message.trim()} variant="contained" endIcon={<SendIcon />}>Send</LoadingButton>
+                              </InputAdornment>
                             }
-                          }}
-                        />
+                          />
+                        </FormControl>
+
                       </Grow>
                     </Box>
                   </Box>
