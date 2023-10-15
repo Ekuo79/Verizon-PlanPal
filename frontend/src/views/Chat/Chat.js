@@ -13,7 +13,8 @@ import SkeletonGroup from '../../components/SkeletonGroup/SkeletonGroup';
 import axios from '../../apis/backend';
 
 const Chat = () => {
-  const loading = false;
+  const [loading, setLoading] = useState(false);
+  const [generating, setGenerating] = useState(true);
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
   const [currMsg, setCurrMsg] = useState(null);
@@ -29,12 +30,15 @@ const Chat = () => {
       });
       setChatHistory([...chatHistory, response?.data]);
     } catch (error) {
+    } finally {
+      setGenerating(false);
     }
   };
 
   const handleSendMessage = async () => {
     const prompt = message.trim();
     if (prompt) {
+      setGenerating(true);
       setCurrMsg(prompt);
       try {
         const response = await axios.post('/chat', { assistant, prompt });
@@ -43,6 +47,7 @@ const Chat = () => {
       } catch (error) {
       } finally {
         setCurrMsg(null);
+        setGenerating(false);
       }
     }
   };
@@ -128,6 +133,23 @@ const Chat = () => {
                             </Box>
                           )
                         })}
+                        {generating && (
+                          <Box sx={{ bgcolor: 'rgb(247, 247, 248)' }}>
+                            <ListItem alignItems="flex-start" sx={{ width: '100%' }}>
+                              <ListItemAvatar>
+                                <Avatar src={`https://verizon-chatbot-dev.s3.us-east-1.amazonaws.com/${assistant.replace(/\s+/g, '').toLocaleLowerCase()}.jpg`} />
+                              </ListItemAvatar>
+                              <ListItemText
+                                primary={
+                                  <Typography sx={{ wordWrap: 'break-word', overflowWrap: 'break-word', lineHeight: '1.4' }} >
+                                    <SkeletonGroup />
+                                  </Typography>
+                                }
+                              />
+                            </ListItem>
+                            <Divider variant="inset" component="li" />
+                          </Box>
+                        )}
                       </List>
                     </Box>
 

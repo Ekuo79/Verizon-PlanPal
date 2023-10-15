@@ -6,12 +6,13 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-faiss_index = FAISS.load_local("data/vecIndex", OpenAIEmbeddings())
 
 from langchain.document_loaders import PyPDFLoader
 from langchain.vectorstores.faiss import FAISS
 from langchain.embeddings.openai import OpenAIEmbeddings
 import os
+
+faiss_index = FAISS.load_local("data/vecIndex", OpenAIEmbeddings())
 
 from langchain.chat_models import ChatOpenAI
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
