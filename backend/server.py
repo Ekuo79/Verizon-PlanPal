@@ -181,7 +181,6 @@ def get_assistant():
     Use catch phrases: {', '.join(catch_phrases)} but don't overuse them, be creative and clever!
     If the user is ready to checkout, or if they indicate they are satisified with their plan, ask them for their name and email address.  
     Makes sure to include the keywords Purchase Confirmed when the user is done checking out so that we know the process is done. Remember to use the JSON format for this. There is no tool for this.
-    When listing out large amounts of information, make sure to use newlines so that I can read it easily.
     """
 
     prompt = conversational_agent.agent.create_prompt(
