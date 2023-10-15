@@ -180,7 +180,7 @@ def get_assistant():
     Make your reponses as short as possible, being effective at getting to the point while providing the necessary info.
     Use catch phrases: {', '.join(catch_phrases)} but don't overuse them, be creative and clever!
     If the user is ready to checkout, or if they indicate they are satisified with their plan, ask them for their name and email address.  
-    Remember to use the JSON format for this. There is no tool for this.
+    Makes sure to include the keywords Purchase Confirmed when the user is done checking out so that we know the process is done. Remember to use the JSON format for this. There is no tool for this.
     """
 
     prompt = conversational_agent.agent.create_prompt(
@@ -191,7 +191,7 @@ def get_assistant():
     session['agent'] = conversational_agent
     
     #chat = ""
-    response = session['agent']("Introduce yourself and ask me if I am a returning Verizon customer or not.")
+    response = session['agent']("Introduce yourself and ask me if I am a returning Verizon customer or not and let the user know that they can ask any questions to clarify things.")
     '''for message in response['action_input']:
         chat += message
         socketio.emit('data', chat)
@@ -226,8 +226,13 @@ def chatbox():
         return jsonify(error="Missing or invalid prompt"), 400
 
     response = session['agent'](prompt)
-    
-    return {"role": assistant, "content": parseOutput(str(response))}, 200
+    confirmed = False
+    if str(response).find('Purchase Confirmed') != -1:
+        confirmed = True
+        print(confirmed)
+
+
+    return {"role": assistant, "content": parseOutput(str(response)), 'confirmed': confirmed}, 200
 
 
 
