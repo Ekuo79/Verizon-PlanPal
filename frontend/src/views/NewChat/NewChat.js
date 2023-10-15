@@ -5,6 +5,7 @@ import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import { setAssistant } from '../../context/chatSlice';
 import SkeletonGroup from '../../components/SkeletonGroup/SkeletonGroup';
+import axios from '../../apis/backend';
 
 const NewChat = () => {
   const loading = false;
@@ -12,10 +13,10 @@ const NewChat = () => {
   const navigate = useNavigate();
 
   const characters = [
-    { "firstName": "Ban", "lastName": "Zhuan" },
-    { "firstName": "He", "lastName": "Cha" },
-    { "firstName": "Jian", "lastName": "Shen" },
-    { "firstName": "Shui", "lastName": "Jiao" }
+    { "name": "Shrek" },
+    { "name": "Ron Burgundy" },
+    { "name": "Deadpool" },
+    { "name": "Zoolander" }
   ];
 
   const renderCharacterButtons = () => {
@@ -24,34 +25,37 @@ const NewChat = () => {
         {characters.map((character) => {
           return (
             <Grid xs={3}>
-              <Box margin="20px">
+              <Box margin="15px">
                 <Button
-                  onClick={() => handleAssistantSelect(`${character.firstName} ${character.lastName}`)}
+                  onClick={() => handleAssistantSelect(`${character.name}`)}
                   variant="contained"
                   size="medium"
-                  fullWidth
-                  borderRadius="4px"
                   sx={{
-                    backgroundColor: 'white',
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
                     '&:hover': {
-                      backgroundColor: 'white'
+                      backgroundColor: 'rgba(0, 0, 0, 0.05)'
                     },
-                    "border-left": "6px solid rgb(254, 190, 39)"
+                    "border-bottom": "4px solid rgba(0, 0, 0, 0.3)",
+                    padding: '6px',
+                    borderRadius: "8px"
                   }}
                 >
                   <Box
                     display='inline-flex'
                     flexDirection="column"
-                    margin='10px'
                   >
                     <img
-                      src={`https://verizon-chatbot-dev.s3.us-east-1.amazonaws.com/${character.firstName.toLocaleLowerCase()}_${character.lastName.toLocaleLowerCase()}.gif`}
-                      alt={`Picture of ${character.firstName} ${character.lastName}`}
-                      height='100px'
+                      src={`https://verizon-chatbot-dev.s3.us-east-1.amazonaws.com/${character.name.replace(/\s+/g, '').toLocaleLowerCase()}.jpg`}
+                      alt={`Picture of ${character.name}`}
+                      style={{
+                        display: 'block',
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        'border-radius': '8px',
+                        'pointer-events': 'none'
+                      }}
                     />
-                    <Typography variant="subtitle1" marginTop="10px" sx={{ "color": "black" }}>
-                      {character.firstName} {character.lastName}
-                    </Typography>
                   </Box>
                 </Button>
               </Box>
@@ -62,7 +66,7 @@ const NewChat = () => {
     );
   }
 
-  const handleAssistantSelect = (assistant) => {
+  const handleAssistantSelect = async (assistant) => {
     dispatch(setAssistant(assistant));
     navigate('/chat');
   };
@@ -80,11 +84,11 @@ const NewChat = () => {
             <Box className="GenericPage__container_title_box GenericPage__container_title_flexBox GenericPage__container_title_flexBox_left">
               <Box className="GenericPage__container_title_flexBox GenericPage__container_title_flexBox_left">
                 <Typography variant="h1">Start New Chat</Typography>
-                <Button size="medium" sx={{ 'margin-left': '16px' }}>Button</Button>
+                {/* <Button size="medium" sx={{ 'margin-left': '16px' }}>Button</Button> */}
               </Box>
               <Box className="GenericPage__container_title_flexBox GenericPage__container_title_flexBox_right" sx={{ 'flex-grow': '1' }}>
                 <Box className="GenericPage__container_title_flexBox_right">
-                  <Button variant="contained" size="medium">Button</Button>
+                  {/* <Button variant="contained" size="medium">Button</Button> */}
                 </Box>
               </Box>
             </Box>
@@ -119,7 +123,7 @@ const NewChat = () => {
                       <Typography variant="h6" marginRight="15px" sx={{ "color": "black" }}>
                         Want to try someone else?
                       </Typography>
-                      <Button onClick={() => handleRegenerate()} variant="text" size="medium">Regenerate</Button>
+                      <Button onClick={() => handleRegenerate()} variant="text" size="medium" >Regenerate</Button>
                     </Box>
                   </Box>
                 )}

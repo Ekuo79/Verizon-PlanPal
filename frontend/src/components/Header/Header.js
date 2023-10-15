@@ -87,9 +87,9 @@ const Header = ({ SignInMenuItems, loading, signedIn }) => {
       <AppBar position="fixed" elevation="0" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar className='Header__toolbar' disableGutters onClick={toggleDrawer("leftMenu", false)} sx={
           {
-            'background-color': 'rgb(40, 87, 151)',
+            'background-color': 'rgb(0, 0, 0)',
             'color': 'rgb(255, 255, 255)',
-            'border-bottom': '4px solid rgb(224, 129, 46)',
+            'border-bottom': '4px solid rgb(100, 100, 100)',
             'height': '56px'
           }
         }>
@@ -106,7 +106,9 @@ const Header = ({ SignInMenuItems, loading, signedIn }) => {
           )}
 
           <IconButton className={"Header__button"} size="medium" color="inherit" aria-label="menu" sx={{ 'min-width': '60px' }}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43.5 29.4" height="32" width="32" alt="U F Logo"><g fill="#FFF"><path d="M31.1 24.2v-7.5h6.8v-4.9h-6.8V4.9h7.5v2.7h4.9V0H23.7v4.9h1.8v19.3h-1.8v4.9h9.1v-4.9h-1.7zM21.1 18.1V4.9h1.8V0h-9.2v4.9h1.8v11.6c0 4.9-.6 7.2-4 7.2s-4-2.3-4-7.2V4.9h1.8V0H0v4.9h1.8v13.2c0 2.9 0 5.3 1.4 7.4 1.5 2.4 4.3 3.9 8.3 3.9 7.1 0 9.6-3.7 9.6-11.3z"></path></g></svg>
+            <svg width="28" height="33" viewBox="0 0 428 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 250H77.72L155.43 416.67L349.73 0H427.45L194.29 500H116.58L0 250Z" fill="#EE0000" />
+            </svg>
           </IconButton>
 
           <Typography variant="h5" component="div" paddingLeft="10px" sx={{ flexGrow: 1 }}>
@@ -120,7 +122,7 @@ const Header = ({ SignInMenuItems, loading, signedIn }) => {
                 }
               }
             }>
-              VERIZON.UF
+              Verizon.Chat
             </Typography>
           </Typography>
 

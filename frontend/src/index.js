@@ -10,10 +10,10 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      main: 'rgb(40, 87, 151)'
+      main: 'rgb(0, 0, 0)'
     },
     secondary: {
-      main: 'rgb(224, 129, 46)'
+      main: 'rgb(238, 0, 0)'
     }
   },
   components: {
@@ -44,9 +44,9 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         contained: {
-          'background-color': 'rgb(40, 87, 151)',
+          'background-color': 'rgb(0, 0, 0)',
           '&:hover': {
-            'background-color': 'rgb(17, 82, 147)'
+            'background-color': 'rgb(36, 36, 36))'
           }
         },
         sizeMedium: {

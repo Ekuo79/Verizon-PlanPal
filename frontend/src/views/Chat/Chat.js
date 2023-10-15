@@ -15,6 +15,15 @@ const Chat = () => {
 
   const assistant = useSelector((state) => state.chat.assistant);
 
+  const handleSetAssistant = async () => {
+    try {
+      const response = await axios.post('/assistant', {
+        assistant
+      });
+    } catch (error) {
+    }
+  };
+
   const handleSendMessage = async () => {
     if (message.trim()) {
       setChatHistory([...chatHistory, message]);
@@ -34,6 +43,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (!assistant) navigate('/new');
+    handleSetAssistant();
   }, []);
 
   return (
