@@ -1,6 +1,7 @@
-from flask import Flask, jsonify, request, session, Response
+from flask import Flask, jsonify, request, session, Response, stream_with_context
 from flask_cors import CORS
 from flask_session import Session
+from flask_socketio import SocketIO
 from dotenv import load_dotenv
 import os
 
@@ -37,7 +38,8 @@ app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_FILE_DIR'] = './.flask_session/'
 
 Session(app)
-
+socketio = SocketIO(app)
+'''
 class checkoutTool(BaseTool):
     name = "checkout"
     #description = tool_desc_checkout
@@ -62,10 +64,9 @@ class checkoutTool(BaseTool):
         plan = action_input.get('plan', 'Unknown')
         lines = action_input.get('lines', 'Unknown')
         return f"CHECKOUT. {name},{address},{plan},{lines}"
-
+'''
 @app.route('/api/assistant', methods=['POST'])
 def get_assistant():
-    print(session)
     assistant = request.json.get('assistant')
     if 'agent' not in session:
         llm=ChatOpenAI(
@@ -203,12 +204,23 @@ def get_assistant():
         tools=tools
         )
         conversational_agent.agent.llm_chain.prompt = prompt
-        #session['agent'] = conversational_agent
+        session['agent'] = conversational_agent
         
-        #session['agent']("Introduce yourself and ask me if I am a returning Verizon customer or not.")
-        session['test'] = 1
-
-        return {"role": assistant, "content": 1}, 200
+        chat = ""
+        response = session['agent']("Introduce yourself and ask me if I am a returning Verizon customer or not.")
+        '''for message in response['action_input']:
+            chat += message
+            socketio.emit('data', chat)
+        '''
+        '''for item in session['agent']:
+            if hasattr(item.choices[0].delta, "action_input"):
+                answer_text = item.choices[0].delta.content
+                self.chats[self.current_chat][-1].answer += answer_text
+                self.chats = self.chats
+                yield
+                '''
+        return {'author': assistant}
+    return {'author': assistant}
 
 import time
 @app.route('/api/stream')
@@ -231,11 +243,9 @@ def chatbox():
         return jsonify(error="Missing or invalid prompt"), 400
     print(prompt)
 
-    #session['agent'](prompt)
-    print(session['test'])
-
-
-    return {"role": assistant, "content": prompt}, 200
+    #response = session['agent'](prompt)
+    
+    return {"role": assistant, "content": session['agent'](prompt)}, 200
 
 
 
