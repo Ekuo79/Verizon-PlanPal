@@ -109,7 +109,7 @@ const Chat = () => {
               </Box>
               <Box className="GenericPage__container_title_flexBox GenericPage__container_title_flexBox_right" sx={{ 'flex-grow': '1' }}>
                 <Box className="GenericPage__container_title_flexBox_right">
-                  <Button onClick={() => displayConfetti()} variant="contained" size="medium">Button</Button>
+                  {/* <Button onClick={() => displayConfetti()} variant="contained" size="medium">Button</Button> */}
                 </Box>
               </Box>
             </Box>

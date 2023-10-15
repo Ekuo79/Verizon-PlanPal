@@ -144,7 +144,7 @@ const NewChat = () => {
                   >
                     {!removeFirstElement &&
                       <Fade in={showFirstElement} timeout={500}>
-                        <Typography variant="h3" sx={{ "color": "black" }}>
+                        <Typography variant="h2" sx={{ "color": "black" }}>
                           Welcome to Verizon!
                         </Typography>
                       </Fade>
@@ -152,8 +152,8 @@ const NewChat = () => {
                     {showSecondElement &&
                       <Box>
                         <Fade in={showSecondElement} timeout={1200}>
-                          <Typography variant="h4" marginTop="10px" marginBottom="50px" sx={{ "color": "black" }}>
-                            Please select your assistant
+                          <Typography variant="h2" marginTop="10px" marginBottom="50px" sx={{ "color": "black" }}>
+                            Choose your Verizon Pro
                           </Typography>
                         </Fade>
                         <Grow in={showSecondElement} timeout={1000}>

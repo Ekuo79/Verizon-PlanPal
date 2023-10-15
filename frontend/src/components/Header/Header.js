@@ -122,7 +122,7 @@ const Header = ({ SignInMenuItems, loading, signedIn }) => {
                 }
               }
             }>
-              Verizon Virtual Assistant
+              Verizon PlanPal
             </Typography>
           </Typography>
 
