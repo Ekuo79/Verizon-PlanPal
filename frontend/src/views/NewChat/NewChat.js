@@ -61,9 +61,9 @@ const NewChat = () => {
                   variant="contained"
                   size="medium"
                   sx={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
                     '&:hover': {
-                      backgroundColor: 'rgba(0, 0, 0, 0.05)'
+                      backgroundColor: 'rgba(0, 0, 0, 0.9)'
                     },
                     "border-bottom": "4px solid rgba(0, 0, 0, 0.3)",
                     padding: '6px',

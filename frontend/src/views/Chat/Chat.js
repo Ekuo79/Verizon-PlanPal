@@ -69,14 +69,10 @@ const Chat = () => {
         const response = await axios.post('/chat', { assistant, prompt });
         setChatHistory(prevState => [...prevState, response?.data]);
         setMessage('');
-        if (response.data.confirmed) {
-          displayConfetti();
-        } else {
-          setCurrMsg(null);
-        }
+        if (response.data.confirmed) displayConfetti();
       } catch (error) {
-        setCurrMsg(null);
       } finally {
+        setCurrMsg(null);
         setGenerating(false);
       }
     }
@@ -154,7 +150,7 @@ const Chat = () => {
                                 </ListItemAvatar>
                                 <ListItemText
                                   primary={
-                                    <Typography sx={{ wordWrap: 'break-word', overflowWrap: 'break-word', lineHeight: '1.4' }} >
+                                    <Typography sx={{ wordWrap: 'break-word', overflowWrap: 'break-word', lineHeight: '1.4', 'font-family': 'Roboto, sans-serif' }} >
                                       {msg.content}
                                     </Typography>
                                   }

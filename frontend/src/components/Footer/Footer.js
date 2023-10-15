@@ -14,7 +14,7 @@ const Footer = () => {
           'max-width': '960px'
         }
       }>
-        <Grid container spacing={2}>
+        {/* <Grid container spacing={2}>
           <Grid item xs={12} sm={12} md={4}>
             <div>Footer Column 1</div>
           </Grid>
@@ -24,7 +24,7 @@ const Footer = () => {
           <Grid item xs={12} sm={12} md={4}>
             <div>Column 3</div>
           </Grid>
-        </Grid>
+        </Grid> */}
       </Box>
     </Fragment>
   )
