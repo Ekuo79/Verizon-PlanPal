@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Avatar, Box, Button, Container, Divider, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Button, Container, Divider, List, ListItem, ListItemAvatar, ListItemText, Paper, TextField, Typography, Fade, Grow } from '@mui/material';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import SkeletonGroup from '../../components/SkeletonGroup/SkeletonGroup';
@@ -129,19 +129,21 @@ const Chat = () => {
                         marginBottom: '20px'
                       }}
                     >
-                      <TextField
-                        fullWidth
-                        variant="outlined"
-                        placeholder="Send a message"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter' && !e.shiftKey) {
-                            handleSendMessage();
-                            e.preventDefault();  // prevent the default action (new line) from being performed
-                          }
-                        }}
-                      />
+                      <Grow in={true} timeout={1000}>
+                        <TextField
+                          fullWidth
+                          variant="outlined"
+                          placeholder="Send a message"
+                          value={message}
+                          onChange={(e) => setMessage(e.target.value)}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                              handleSendMessage();
+                              e.preventDefault();  // prevent the default action (new line) from being performed
+                            }
+                          }}
+                        />
+                      </Grow>
                     </Box>
                   </Box>
                 )}

@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Container, Paper, Grid, Typography } from '@mui/material';
+import { Box, Button, Container, Paper, Grid, Typography, Fade, Grow } from '@mui/material';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import { setAssistant } from '../../context/chatSlice';
@@ -12,12 +13,41 @@ const NewChat = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const assistant = useSelector((state) => state.chat.assistant);
+
   const characters = [
     { "name": "Shrek" },
     { "name": "Ron Burgundy" },
     { "name": "Deadpool" },
     { "name": "Zoolander" }
   ];
+
+  const [showFirstElement, setShowFirstElement] = useState(true);
+  const [removeFirstElement, setRemoveFirstElementDelay] = useState(false);
+  const [showSecondElement, setShowSecondElement] = useState(false);
+
+  useEffect(() => {
+    // Fade out the first element after 2 seconds
+    const timeout1 = setTimeout(() => {
+      setShowFirstElement(false);
+    }, assistant ? 0 : 2500);
+
+    const timeout1Remove = setTimeout(() => {
+      setRemoveFirstElementDelay(true);
+    }, assistant ? 0 : 3000);
+
+    // Show the second element 2 seconds after the first one fades out
+    const timeout2 = setTimeout(() => {
+      setShowSecondElement(true);
+    }, assistant ? 0 : 3000); // 2 seconds + 2 seconds
+
+    // Cleanup the timeouts if the component is unmounted
+    return () => {
+      clearTimeout(timeout1);
+      clearTimeout(timeout1Remove);
+      clearTimeout(timeout2);
+    };
+  }, []);
 
   const renderCharacterButtons = () => {
     return (
@@ -112,19 +142,31 @@ const NewChat = () => {
                     height='75vh'
                     marginX='80px'
                   >
-                    <Typography variant="h4" sx={{ "color": "black" }}>
-                      Welcome to Verizon!
-                    </Typography>
-                    <Typography variant="h5" marginTop="10px" marginBottom="50px" sx={{ "color": "black" }}>
-                      Please select your assistant
-                    </Typography>
-                    {renderCharacterButtons()}
-                    <Box display="flex" flexDirection="row" alignItems="center" marginTop="30px" >
-                      <Typography variant="h6" marginRight="15px" sx={{ "color": "black" }}>
-                        Want to try someone else?
-                      </Typography>
-                      <Button onClick={() => handleRegenerate()} variant="text" size="medium" >Regenerate</Button>
-                    </Box>
+                    {!removeFirstElement &&
+                      <Fade in={showFirstElement} timeout={500}>
+                        <Typography variant="h3" sx={{ "color": "black" }}>
+                          Welcome to Verizon!
+                        </Typography>
+                      </Fade>
+                    }
+                    {showSecondElement &&
+                      <Box>
+                        <Fade in={showSecondElement} timeout={1200}>
+                          <Typography variant="h4" marginTop="10px" marginBottom="50px" sx={{ "color": "black" }}>
+                            Please select your assistant
+                          </Typography>
+                        </Fade>
+                        <Grow in={showSecondElement} timeout={1000}>
+                          {renderCharacterButtons()}
+                        </Grow>
+                        {/* <Box display="flex" flexDirection="row" alignItems="center" marginTop="30px" >
+                            <Typography variant="h6" marginRight="15px" sx={{ "color": "black" }}>
+                              Want to try someone else?
+                            </Typography>
+                            <Button onClick={() => handleRegenerate()} variant="text" size="medium" >Regenerate</Button>
+                          </Box> */}
+                      </Box>
+                    }
                   </Box>
                 )}
             </Paper>
