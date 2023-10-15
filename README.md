@@ -1,3 +1,4 @@
+# Verizon PlanPal
 ## Inspiration
 The inspiration for Verizon PlanPal came from our diverse backgrounds across technology and business.  We analyzed the current model for which customers purchase phone plans and found an opportunity for refinement, maximizing user experience while minimizing interruptions.
 ## What it does
