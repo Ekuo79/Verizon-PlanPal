@@ -27,7 +27,8 @@ const theme = createTheme({
     MuiTypography: {
       styleOverrides: {
         root: {
-          lineHeight: 'unset'
+          lineHeight: 'unset',
+          'font-family': 'Bebas Neue, sans-serif'
         },
         h1: {
           'font-size': '1.875rem'

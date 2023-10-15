@@ -1,11 +1,13 @@
 * {
-  box-sizing: inherit
+  box-sizing: inherit;
+  font-family: 'Bebas Neue', sans-serif;
 }
 
 html,
 body,
 main {
   height: 100%;
+  font-family: 'Bebas Neue', sans-serif;
 }
 
 html {

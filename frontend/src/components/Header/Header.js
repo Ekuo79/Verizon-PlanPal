@@ -122,7 +122,7 @@ const Header = ({ SignInMenuItems, loading, signedIn }) => {
                 }
               }
             }>
-              Verizon.Chat
+              Verizon Virtual Assistant
             </Typography>
           </Typography>
 
