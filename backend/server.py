@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
+faiss_index = FAISS.load_local("data/vecIndex", OpenAIEmbeddings())
 
 from langchain.document_loaders import PyPDFLoader
 from langchain.vectorstores.faiss import FAISS
@@ -39,32 +40,7 @@ app.config['SESSION_FILE_DIR'] = './.flask_session/'
 
 Session(app)
 socketio = SocketIO(app)
-'''
-class checkoutTool(BaseTool):
-    name = "checkout"
-    #description = tool_desc_checkout
 
-    def _run(
-        self, action_input, run_manager: Optional[CallbackManagerForToolRun] = None, **kwargs
-    ) -> str:
-
-        action_input = {'plan': action_input}
-        name = action_input.get('name', 'Unknown')
-        address = action_input.get('address', 'Unknown')
-        plan = action_input.get('plan', 'Unknown')
-        lines = action_input.get('lines', 'Unknown')
-        return f"CHECKOUT. {name},{address},{plan},{lines}"
-
-    async def _arun(
-        self, action_input, run_manager: Optional[CallbackManagerForToolRun] = None, **kwargs
-    ) -> str:
-        action_input = {'plan': action_input}
-        name = action_input.get('name', 'Unknown')
-        address = action_input.get('address', 'Unknown')
-        plan = action_input.get('plan', 'Unknown')
-        lines = action_input.get('lines', 'Unknown')
-        return f"CHECKOUT. {name},{address},{plan},{lines}"
-'''
 @app.route('/api/leftMenu', methods=['GET'])
 def get_left_menu():
   return {"leftMenuItems":'[{"heading":"Verizon","items":[{"label":"Start New Chat","route":"/new"}]}]'}, 200
@@ -81,10 +57,9 @@ def get_assistant():
         openai_api_key=os.getenv('OPENAI_API_KEY'),
         temperature=.6,
         model_name='gpt-4',
-        streaming=True, callbacks=[StreamingStdOutCallbackHandler()]
+        streaming=False
     )
 
-    faiss_index = FAISS.load_local("data/vecIndex", OpenAIEmbeddings())
 
     retriever = RetrievalQA.from_chain_type(
         llm=llm,
@@ -194,8 +169,7 @@ def get_assistant():
             "Listen to your friend Billy Zane. He's a cool dude."
         ]
     else:
-        raise
-        catch_phrases = ["No catch phrases available for this character."]
+        catch_phrases = ["."]
     
     sys_msg = f"""You are a helpful chatbot that answers the user's questions about Verizon phone plans.
     You will respond with the personality of {assistant}.
@@ -204,7 +178,8 @@ def get_assistant():
     Do not use the name of your tools, I dont want to hear them.
     Make your reponses as short as possible, being effective at getting to the point while providing the necessary info.
     Use catch phrases: {', '.join(catch_phrases)} but don't overuse them, be creative and clever!
-    If the user is ready to checkout ask them for their name and email address.  Remember to use the JSON format for this. There is no tool for this.
+    If the user is ready to checkout, or if they indicate they are satisified with their plan, ask them for their name and email address.  
+    Remember to use the JSON format for this. There is no tool for this.
     """
 
     prompt = conversational_agent.agent.create_prompt(
@@ -214,7 +189,7 @@ def get_assistant():
     conversational_agent.agent.llm_chain.prompt = prompt
     session['agent'] = conversational_agent
     
-    chat = ""
+    #chat = ""
     response = session['agent']("Introduce yourself and ask me if I am a returning Verizon customer or not.")
     '''for message in response['action_input']:
         chat += message
@@ -228,96 +203,6 @@ def get_assistant():
             yield
             '''
     return {'role': assistant, 'content': parseOutput(str(response))}, 200
-    '''
-    if assistant == "Deadpool":
-            catch_phrases = [
-            "Maximum effort!",
-            "Chimichangas!",
-            "I'm touching myself tonight.",
-            "With great power comes great irresponsibility.",
-            "Did I leave the stove on?",
-            "Time to make the chimi-freakin'-changas!",
-            "I'm the merc with a mouth.",
-            "I know, right?",
-            "You can't buy love, but you can rent it for three minutes!",
-            "Fourth wall break inside a fourth wall break? That's like... sixteen walls.",
-            "Hi, I'm Wade Wilson, and I'm here to talk to you about testicular cancer.",
-            "Smells like old lady pants in here.",
-            "Say the magic words, fat Gandalf.",
-            "Superhero landing!",
-            "So dark! Are you sure you're not from the DC Universe?"
-        ]
-
-    elif assistant == "Shrek":
-        catch_phrases = [
-        "Ogres are like onions.",
-        "Better out than in, I always say.",
-        "I'm not a puppet. I'm a real boy!",
-        "What are you doing in my swamp?",
-        "This is the part where you run away.",
-        "Do you know what that thing could do? It'll grind your bones for its bread.",
-        "I got this.",
-        "I like that boulder. That is a nice boulder.",
-        "You're going the right way for a smacked bottom.",
-        "I'm making waffles!"
-    ]
-    elif assistant == "Ron Burgundy":
-        catch_phrases = [
-        "Stay classy, San Diego.",
-        "I'm kind of a big deal.",
-        "I'm Ron Burgundy?",
-        "You stay classy.",
-        "I love scotch. Scotchy, scotch, scotch.",
-        "Don't act like you're not impressed.",
-        "It's so damn hot. Milk was a bad choice.",
-        "I immediately regret this decision.",
-        "60% of the time, it works every time.",
-        "Well, that escalated quickly.",
-        "I'm in a glass case of emotion!",
-        "What is this? A center for ants?",
-        "I'm not a baby, I am a man! I am an anchorman!",
-        "I look good. I mean, really good. Hey everyone! Come and see how good I look!",
-        "You're so wise. You're like a miniature Buddha, covered in hair."
-    ]
-    elif assistant == "Zoolander":
-        catch_phrases = [
-            "What is this? A center for ants?",
-            "I'm pretty sure there's a lot more to life than being really, really, ridiculously good looking.",
-            "I feel like I'm taking crazy pills!",
-            "Blue Steel!",
-            "Magnum!",
-            "Moisture is the essence of wetness, and wetness is the essence of beauty.",
-            "So hot right now!",
-            "He's absolutely right.",
-            "I'm not an ambi-turner.",
-            "It's a walk-off!",
-            "Obey my dog!",
-            "I invented the piano key necktie!",
-            "Who you tryin' to get crazy with, ese? Don't you know I'm loco?",
-            "Listen to your friend Billy Zane. He's a cool dude."
-        ]
-    else:
-        raise
-        catch_phrases = ["No catch phrases available for this character."]
-    sys_msg = f"""You are a helpful chatbot that answers the user's questions about Verizon phone plans.
-        You will respond with the personality of {assistant}.
-        Remember to always return your result in the JSON format, or else I won't be able to understand you!.
-        Do not repeat information.
-        Do not use the name of your tools, I dont want to hear them.
-        Make your reponses as short as possible, being effective at getting to the point while providing the necessary info.
-        Use catch phrases: {', '.join(catch_phrases)} but don't overuse them, be creative and clever!
-        If the user is ready to checkout ask them for their name and email address.  Remember to use the JSON format for this. There is no tool for this.
-        """
-    
-    prompt = conversational_agent.agent.create_prompt(
-        system_message=sys_msg,
-        tools=tools
-        )
-    conversational_agent.agent.llm_chain.prompt = prompt
-    response = session['agent'] = conversational_agent
-    '''
-    print('error')
-    return {'author': assistant}, 200
 
 import time
 @app.route('/api/stream')
