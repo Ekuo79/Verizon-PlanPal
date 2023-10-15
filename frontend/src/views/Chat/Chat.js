@@ -28,21 +28,26 @@ const Chat = () => {
       const response = await axios.post('/assistant', {
         assistant
       });
-      setChatHistory([...chatHistory, response?.data]);
+      addHistory(response?.data);
     } catch (error) {
     } finally {
       setGenerating(false);
     }
   };
 
+  const addHistory = (newHistory) => {
+    setChatHistory([...chatHistory, newHistory]);
+  }
+
   const handleSendMessage = async () => {
     const prompt = message.trim();
     if (prompt) {
       setGenerating(true);
+      addHistory({ 'role': 'User', content: prompt });
       setCurrMsg(prompt);
       try {
         const response = await axios.post('/chat', { assistant, prompt });
-        setChatHistory([...chatHistory, { 'role': 'User', content: prompt }, response?.data]);
+        addHistory(response?.data);
         setMessage('');
       } catch (error) {
       } finally {
