@@ -65,6 +65,10 @@ class checkoutTool(BaseTool):
         lines = action_input.get('lines', 'Unknown')
         return f"CHECKOUT. {name},{address},{plan},{lines}"
 '''
+@app.route('/api/leftMenu', methods=['GET'])
+def get_left_menu():
+  return {"leftMenuItems":'[{"heading":"Verizon","items":[{"label":"Start New Chat","route":"/new"}]}]'}, 200
+
 @app.route('/api/assistant', methods=['POST'])
 def get_assistant():
     assistant = request.json.get('assistant')
@@ -219,8 +223,8 @@ def get_assistant():
                 self.chats = self.chats
                 yield
                 '''
-        return {'author': assistant}
-    return {'author': assistant}
+        return {'role': assistant, 'content': str(response)}, 200
+    return {'role': assistant}, 200
 
 import time
 @app.route('/api/stream')
@@ -241,11 +245,10 @@ def chatbox():
 
     if prompt is None or not isinstance(prompt, str):
         return jsonify(error="Missing or invalid prompt"), 400
-    print(prompt)
 
-    #response = session['agent'](prompt)
+    response = session['agent'](prompt)
     
-    return {"role": assistant, "content": session['agent'](prompt)}, 200
+    return {"role": assistant, "content": str(response)}, 200
 
 
 

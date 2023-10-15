@@ -1,6 +1,7 @@
 /venv
 /__pycache__
 /flask_session
+/.flask_session
 /lib
 /bin
 pyvenv.cfg
