@@ -27,6 +27,7 @@ const Chat = () => {
       const response = await axios.post('/assistant', {
         assistant
       });
+      setChatHistory([...chatHistory, response?.data]);
     } catch (error) {
     }
   };

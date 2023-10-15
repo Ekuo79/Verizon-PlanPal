@@ -71,7 +71,7 @@ const Header = ({ SignInMenuItems, loading, signedIn }) => {
 
   // Left menu drawer
   // Initialize menu content
-  const { data: leftMenuData, loading: leftMenuLoading, alert: leftMenuAlert } = useFetchData('/renderClient/getLeftMenuItems', { title: "menu items", retryButton: true });
+  const { data: leftMenuData, loading: leftMenuLoading, alert: leftMenuAlert } = useFetchData('/leftMenu', { title: "menu items", retryButton: true });
   // Handle nested list expand and collapse
   const [leftMenuExpanded, setLeftMenuExpanded] = useState({});
   const handleleftMenuClick = (sectionIndex, itemIndex) => {
